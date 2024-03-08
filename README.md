@@ -53,13 +53,13 @@ Existe dois links para acesso ao Swagger:
 #### service-a
 | Comando | Resultado                             |
 |---------|-----------------------------------------|
-|curl -X 'POST' 'http://localhost:8081/cep' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"cep": "59067400"}'| {"temp_C":"26","temp_F":"78.80","temp_K":"293.00"} |
+|curl -X 'POST' 'http://localhost:8081/cep' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"cep": "59067400"}'| {"city": Natal, "temp_C":"26","temp_F":"78.80","temp_K":"293.00"} |
 |curl -X 'POST' 'http://localhost:8081/cep' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"cep": "5906740A"}'| invalid zipcode |
 
 #### service-b
 | Comando | Resultado                             |
 |---------|-----------------------------------------|
-| curl -X 'GET' 'http://localhost:8080/cep/70070080' -H 'accept: application/json' | {"temp_C":"36","temp_F":"96.80","temp_K":"309.00"} |
+| curl -X 'GET' 'http://localhost:8080/cep/70070080' -H 'accept: application/json' | {"city":"Brasília", "temp_C":"36","temp_F":"96.80","temp_K":"309.00"} |
 | curl -X 'GET' 'http://localhost:8080/cep/7007008A' -H 'accept: application/json' | invalid zipcode |
 | curl -X 'GET' 'http://localhost:8080/cep/70070081' -H 'accept: application/json' | can not found zipcode |
 
