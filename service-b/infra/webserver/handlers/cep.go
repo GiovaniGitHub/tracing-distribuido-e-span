@@ -100,8 +100,7 @@ func GetTemperature(w http.ResponseWriter, r *http.Request) {
 
 	tracer := otel.Tracer(configs.MICROSERVICE_NAME)
 	ctx = otel.GetTextMapPropagator().Extract(r.Context(), propagation.HeaderCarrier(r.Header))
-	ctx, span := tracer.Start(ctx, "GET Temperature")
-	defer span.End()
+	ctx, span := tracer.Start(ctx, "get-city-name")
 
 	cep := r.URL.Path[len("/cep/"):]
 	viacepURL := fmt.Sprintf("http://viacep.com.br/ws/%s/json/", cep)
@@ -114,6 +113,10 @@ func GetTemperature(w http.ResponseWriter, r *http.Request) {
 
 	startTime := time.Now()
 	response, err := makeRequest(req)
+	endTime := time.Now()
+	responseTime := endTime.Sub(startTime)
+	span.SetAttributes(attribute.Float64("responseTime", responseTime.Seconds()))
+	span.End()
 	if err != nil {
 		handleError(w, "Erro ao fazer requisição HTTP", http.StatusInternalServerError)
 		return
@@ -137,15 +140,22 @@ func GetTemperature(w http.ResponseWriter, r *http.Request) {
 	}
 
 	city := strings.ReplaceAll(address.Localidade, " ", "+")
+	tracer = otel.Tracer(configs.MICROSERVICE_NAME)
+	ctx_temperature, span_temperature := tracer.Start(ctx, "get-city-temperature")
+	defer span_temperature.End()
+
 	urlWeather := fmt.Sprintf("https://wttr.in/%s?format=j1", city)
 
-	req, err = getRequestWithContext(ctx, urlWeather)
+	req, err = getRequestWithContext(ctx_temperature, urlWeather)
 	if err != nil {
 		handleError(w, "Erro ao criar requisição HTTP", http.StatusInternalServerError)
 		return
 	}
-
+	startTime = time.Now()
 	response, err = makeRequest(req)
+	endTime = time.Now()
+
+	span_temperature.SetAttributes(attribute.Float64("responseTime", endTime.Sub(startTime).Seconds()))
 	if err != nil {
 		handleError(w, "Erro ao fazer requisição HTTP", http.StatusInternalServerError)
 		return
@@ -164,8 +174,8 @@ func GetTemperature(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	endTime := time.Now()
-	responseTime := endTime.Sub(startTime)
-	span.SetAttributes(attribute.Float64("responseTime", responseTime.Seconds()))
+	// endTime := time.Now()
+	// responseTime := endTime.Sub(startTime)
+	// span.SetAttributes(attribute.Float64("responseTime", responseTime.Seconds()))
 	json.NewEncoder(w).Encode(temperature)
 }

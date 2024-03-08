@@ -22,7 +22,7 @@ O sistema em Go que receba um CEP, identifica a cidade e retorna o clima atual (
     URL_BASE=http://localhost
     EXTERNAL_CALL_URL=http://serviceb
     EXTERNAL_CALL_PORT=8080
-    OTEL_SERVICE_NAME=microservice-demo
+    OTEL_SERVICE_NAME=service-a
     OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
     MICROSERVICE_NAME="microservice-tracer-service-a"
     ```
@@ -33,7 +33,7 @@ O sistema em Go que receba um CEP, identifica a cidade e retorna o clima atual (
     URL_BASE=http://localhost
     MICROSERVICE_NAME="microservice-tracer-service-b"
     OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4317
-    OTEL_SERVICE_NAME=microservice-demo
+    OTEL_SERVICE_NAME=service-b
     ```
 
 5. Execute o comando:

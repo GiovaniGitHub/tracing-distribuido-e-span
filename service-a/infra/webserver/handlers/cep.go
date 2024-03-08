@@ -56,7 +56,7 @@ func PostTemperature(w http.ResponseWriter, r *http.Request) {
 
 	tracer := otel.Tracer(configs.MICROSERVICE_NAME)
 	ctx = otel.GetTextMapPropagator().Extract(r.Context(), propagation.HeaderCarrier(r.Header))
-	ctx, span := tracer.Start(ctx, "Post Temperature")
+	ctx, span := tracer.Start(ctx, "get-cep-temperature")
 	defer span.End()
 
 	if r.Method != "POST" {
