@@ -1,0 +1,71 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Fullcycle Pós Go Expert Go Expert",
+        "title": "Desafio 2.0 - service-a",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Giovani Angelo",
+            "email": "giovani.angelo@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "paths": {
+        "/cep": {
+            "post": {
+                "description": "receive a CEP and forwards it if valid",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "postcep"
+                ],
+                "summary": "Handle CEP Request",
+                "parameters": [
+                    {
+                        "description": "CEP request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Input"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.Input": {
+            "type": "object",
+            "properties": {
+                "cep": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+basePath: /
+definitions:
+  entity.Input:
+    properties:
+      cep:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: giovani.angelo@gmail.com
+    name: Giovani Angelo
+  description: Fullcycle Pós Go Expert Go Expert
+  termsOfService: http://swagger.io/terms/
+  title: Desafio 2.0 - service-a
+  version: "1.0"
+paths:
+  /cep:
+    post:
+      consumes:
+      - application/json
+      description: receive a CEP and forwards it if valid
+      parameters:
+      - description: CEP request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Input'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Handle CEP Request
+      tags:
+      - postcep
+swagger: "2.0"
