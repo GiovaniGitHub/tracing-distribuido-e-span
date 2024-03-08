@@ -1,0 +1,55 @@
+basePath: /
+definitions:
+  entity.Temperature:
+    properties:
+      temp_C:
+        type: string
+      temp_F:
+        type: string
+      temp_K:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: giovani.angelo@gmail.com
+    name: Giovani Angelo
+  description: Fullcycle Pós Go Expert Go Expert
+  termsOfService: http://swagger.io/terms/
+  title: Desafio 2.0 - service-b
+  version: "1.0"
+paths:
+  /cep/{cep}:
+    get:
+      consumes:
+      - application/json
+      description: Get Address by Post Code 2
+      parameters:
+      - description: Cep
+        in: path
+        name: cep
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Temperature'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get Address 2
+      tags:
+      - address
+swagger: "2.0"

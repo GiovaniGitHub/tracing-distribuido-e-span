@@ -1,0 +1,83 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Fullcycle Pós Go Expert Go Expert",
+        "title": "Desafio 2.0 - service-b",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Giovani Angelo",
+            "email": "giovani.angelo@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/cep/{cep}": {
+            "get": {
+                "description": "Get Address by Post Code 2",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "Get Address 2",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Cep",
+                        "name": "cep",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Temperature"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "entity.Temperature": {
+            "type": "object",
+            "properties": {
+                "temp_C": {
+                    "type": "string"
+                },
+                "temp_F": {
+                    "type": "string"
+                },
+                "temp_K": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
