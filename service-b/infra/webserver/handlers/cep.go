@@ -51,7 +51,7 @@ func parseResponseBody(response *http.Response, data interface{}) error {
 	return json.Unmarshal(body, data)
 }
 
-func getTemperatureFromWeatherData(weatherData entity.WeatherData) (entity.Temperature, error) {
+func getTemperatureFromWeatherData(weatherData entity.WeatherData, city string) (entity.Temperature, error) {
 	var temperature entity.Temperature
 	temperature.TempC = weatherData.CurrentCondition[0].TempC
 	value, err := strconv.ParseFloat(weatherData.CurrentCondition[0].TempC, 32)
@@ -60,6 +60,7 @@ func getTemperatureFromWeatherData(weatherData entity.WeatherData) (entity.Tempe
 	}
 	temperature.TempF = strconv.FormatFloat(value*1.8+32, 'f', 2, 32)
 	temperature.TempK = strconv.FormatFloat(value+273, 'f', 2, 32)
+	temperature.City = city
 	return temperature, nil
 }
 
@@ -135,8 +136,8 @@ func GetTemperature(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := strings.ReplaceAll(address.Localidade, " ", "+")
-	urlWeather := fmt.Sprintf("https://wttr.in/%s?format=j1", result)
+	city := strings.ReplaceAll(address.Localidade, " ", "+")
+	urlWeather := fmt.Sprintf("https://wttr.in/%s?format=j1", city)
 
 	req, err = getRequestWithContext(ctx, urlWeather)
 	if err != nil {
@@ -157,7 +158,7 @@ func GetTemperature(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	temperature, err := getTemperatureFromWeatherData(weatherData)
+	temperature, err := getTemperatureFromWeatherData(weatherData, city)
 	if err != nil {
 		handleError(w, "Erro ao calcular temperatura", http.StatusInternalServerError)
 		return
